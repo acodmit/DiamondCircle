@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.effect.Blend?>
+<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GameController">
+   <children>
+      <Label fx:id="lblPlayer1" layoutX="84.0" layoutY="121.0" text="Player 1" textFill="#fa0505">
+         <font>
+            <Font name="Constantia Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblPlayer2" layoutX="223.0" layoutY="121.0" text="Player 2" textFill="#e6f700">
+         <font>
+            <Font name="Constantia Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblPlayer3" layoutX="384.0" layoutY="121.0" text="Player 3" textFill="#25e41b">
+         <font>
+            <Font name="Constantia Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblPlayer4" layoutX="534.0" layoutY="121.0" text="Player 4" textFill="#1c9ce1">
+         <font>
+            <Font name="Constantia Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="721.0" layoutY="115.0" mnemonicParsing="false" onAction="#start" text="Start / Pause">
+         <font>
+            <Font name="Constantia" size="18.0" />
+         </font>
+      </Button>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="59.0" layoutY="101.0" opacity="0.15" stroke="BLACK" strokeType="INSIDE" width="590.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="355.0" layoutX="691.0" layoutY="200.0" opacity="0.15" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Label layoutX="38.0" layoutY="194.0" text="Paths:">
+         <font>
+            <Font name="Constantia" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnFigure1" layoutX="45.0" layoutY="230.0" mnemonicParsing="false" text="Figure1" textFill="#fa0505" />
+      <Button fx:id="btnFigure2" layoutX="45.0" layoutY="265.0" mnemonicParsing="false" text="Figure2" textFill="#fa0505" />
+      <Button fx:id="btnFigure3" layoutX="120.0" layoutY="230.0" mnemonicParsing="false" text="Figure3" textFill="#fa0505" />
+      <Button fx:id="btnFigure4" layoutX="120.0" layoutY="265.0" mnemonicParsing="false" text="Figure4" textFill="#fa0505" />
+      <Button fx:id="btnFigure5" layoutX="45.0" layoutY="330.0" mnemonicParsing="false" text="Figure5" textFill="#c9d126" />
+      <Button fx:id="btnFigure6" layoutX="45.0" layoutY="365.0" mnemonicParsing="false" text="Figure6" textFill="#c9d126" />
+      <Button fx:id="btnFigure7" layoutX="120.0" layoutY="330.0" mnemonicParsing="false" text="Figure7" textFill="#c9d126" />
+      <Button fx:id="btnFigure8" layoutX="120.0" layoutY="365.0" mnemonicParsing="false" text="Figure8" textFill="#c9d126" />
+      <Button fx:id="btnFigure9" layoutX="45.0" layoutY="430.0" mnemonicParsing="false" text="Figure9" textFill="#25e41b" />
+      <Button fx:id="btnFigure10" layoutX="45.0" layoutY="465.0" mnemonicParsing="false" text="Figure10" textFill="#25e41b" />
+      <Button fx:id="btnFigure11" layoutX="120.0" layoutY="430.0" mnemonicParsing="false" text="Figure11" textFill="#25e41b" />
+      <Button fx:id="btnFigure12" layoutX="120.0" layoutY="465.0" mnemonicParsing="false" text="Figure12" textFill="#25e41b" />
+      <Button fx:id="btnFigure13" layoutX="45.0" layoutY="530.0" mnemonicParsing="false" text="Figure13" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure14" layoutX="45.0" layoutY="565.0" mnemonicParsing="false" text="Figure14" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure15" layoutX="120.0" layoutY="530.0" mnemonicParsing="false" text="Figure15" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure16" layoutX="120.0" layoutY="565.0" mnemonicParsing="false" text="Figure16" textFill="#1c9ce1" />
+      <Separator layoutX="20.0" layoutY="310.0" prefWidth="200.0" />
+      <Separator layoutX="20.0" layoutY="410.0" prefWidth="200.0" />
+      <Separator layoutX="20.0" layoutY="510.0" prefWidth="200.0" />
+      <GridPane fx:id="gridGame" layoutX="260.0" layoutY="202.0" prefHeight="350.0" prefWidth="350.0">
+      </GridPane>
+      <AnchorPane fx:id="anchorCard" layoutX="701.0" layoutY="220.0" prefHeight="220.0" prefWidth="170.0" />
+      <Label fx:id="lblNumberOfFinishedGames" layoutX="27.0" layoutY="34.0" prefHeight="50.0" prefWidth="137.0" text="Number of finished games at the moment:" wrapText="true" />
+      <Label fx:id="lblCurrentPlayer" layoutX="261.0" layoutY="568.0" prefHeight="18.0" prefWidth="394.0" text="Current: " wrapText="true" />
+      <Label fx:id="lblCurrentCard" layoutX="703.0" layoutY="443.0" prefHeight="99.0" prefWidth="158.0" />
+      <Label fx:id="lblCurrentFigure" layoutX="311.0" layoutY="591.0" prefHeight="44.0" prefWidth="314.0" wrapText="true" />
+   </children>
+</AnchorPane>
