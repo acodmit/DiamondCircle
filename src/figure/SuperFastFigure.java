@@ -11,4 +11,5 @@ public class SuperFastFigure extends Figure {
         return " SuperFastFigure";
     }
 
+
 }

@@ -136,6 +136,7 @@ public class Player extends Thread {
                     }
                 }
 
+
                 if(HOLES_SET) {
                     synchronized (Matrix.LOCK) {
                         for (int i1 = 0; i1 < Matrix.MATRIX_SIZE; i1++) {
@@ -202,6 +203,7 @@ public class Player extends Thread {
 
 
                 synchronized (Matrix.LOCK){
+
                     Matrix.TURN++;
                     Matrix.LOCK.notifyAll();
                 }

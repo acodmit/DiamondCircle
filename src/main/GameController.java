@@ -3,7 +3,9 @@ package main;
 import java.io.File;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import card.Card;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -18,11 +20,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 
+import map.Field;
 import map.Matrix;
 import card.RegularCard;
 import card.SpecialCard;
 import figure.HoveringFigure;
 import figure.RegularFigure;
+
+import static map.Matrix.LOCK;
 
 
 public class GameController {
@@ -32,7 +37,7 @@ public class GameController {
     public static File GAMES_FOLDER = null;
 
     @FXML
-    private AnchorPane anchorCard;
+    public AnchorPane anchorCard;
 
     @FXML
     private Button btnFigure1;
@@ -83,7 +88,7 @@ public class GameController {
     private Button btnFigure9;
 
     @FXML
-    private GridPane gridGame;
+    public GridPane gridGame;
 
     @FXML
     private Label lblCurrentCard;
@@ -191,7 +196,8 @@ public class GameController {
 
     }
 
-    private void showCard(String path){
+    public void showCard(String path){
+
         Image cardImage = new Image(path);
         ImageView cardImageView = new ImageView(cardImage);
         cardImageView.setFitWidth(170);
@@ -200,7 +206,8 @@ public class GameController {
 
     }
 
-    private void showField(String path, int X, int Y){
+    public void showField( String path, int X , int Y){
+
         Image fieldImage = new Image(path);
         ImageView fieldImageView = new ImageView(fieldImage);
         fieldImageView.setFitWidth(FIELD_SIZE);
@@ -209,8 +216,9 @@ public class GameController {
     }
 
     public void mapRefresh(){
-        Runnable mapRefreshRunnable = () -> {
-            while(Main.GAME_FINISHED){
+
+        Runnable mapDrawer = () -> {
+            while (!Main.GAME_FINISHED) {
                 synchronized (Matrix.LOCK) {
                     while (Main.GAME_PAUSE) {
                         try {
@@ -219,96 +227,97 @@ public class GameController {
                             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
                         }
                     }
-                }
 
-                synchronized (Matrix.LOCK){
+                    Platform.runLater(() -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
 
-                Platform.runLater(() -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
+                    if (Main.CURRENT_PLAYER != null)
+                        Platform.runLater(() -> lblCurrentPlayer.setText(Main.CURRENT_PLAYER.toString()));
+                    if (Main.CURRENT_CARD != null)
+                        Platform.runLater(() -> lblCurrentCard.setText(Main.CURRENT_CARD.toString()));
+                    if (Main.CURRENT_FIGURE != null)
+                        Platform.runLater(() -> lblCurrentFigure.setText(Main.CURRENT_FIGURE.toString()));
 
-                if(Main.CURRENT_PLAYER != null)
-                    Platform.runLater(() -> lblCurrentPlayer.setText(Main.CURRENT_PLAYER.toString()));
-                if(Main.CURRENT_CARD != null)
-                    Platform.runLater(() -> lblCurrentCard.setText(Main.CURRENT_CARD.toString()));
-                if(Main.CURRENT_FIGURE != null)
-                    Platform.runLater(() -> lblCurrentFigure.setText(Main.CURRENT_FIGURE.toString()));
-
-                String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle5/Resources/Images/";
-                if( Main.CURRENT_CARD instanceof RegularCard){
-                    if(((RegularCard) Main.CURRENT_CARD).getNumber() == 1){
-                        showCard(folder +"card_1.png");
-                    }else if(((RegularCard) Main.CURRENT_CARD).getNumber() == 2){
-                        showCard(folder + "card_2.png");
-                    }else if(((RegularCard) Main.CURRENT_CARD).getNumber() == 3){
-                        showCard(folder + "card_3.png");
-                    }else{
-                        showCard(folder + "card_4.png");
+                    String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/";
+                    if (Main.CURRENT_CARD instanceof RegularCard) {
+                        if (((RegularCard) Main.CURRENT_CARD).getNumber() == 1) {
+                            showCard(folder + "card_1.png");
+                        } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 2) {
+                            showCard(folder + "card_2.png");
+                        } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 3) {
+                            showCard(folder + "card_3.png");
+                        } else {
+                            showCard(folder + "card_4.png");
+                        }
+                    } else if (Main.CURRENT_CARD instanceof SpecialCard) {
+                        showCard(folder + "special.png");
                     }
-                }else if(Main.CURRENT_CARD instanceof SpecialCard){
-                    showCard(folder + "special.png");
-                }
-                for(int i = 0; i < Matrix.MATRIX_SIZE; i++){
-                    for(int j = 0; j < Matrix.MATRIX_SIZE; j++){
-                        if(Matrix.FIELDS[i][j].getHole()) {
-                            showField(folder + "hole.png", i, j);
-                        }else if(Matrix.FIELDS[i][j].getDiamond()){
-                            showField(folder + "diamond.png", i, j);
-                        }else if(Matrix.FIELDS[i][j].getFigure() != null){
+                    for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
+                        for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
+                            if (Matrix.FIELDS[i][j].getHole()) {
+                                showField(folder + "hole.png", i, j);
+                            } else if (Matrix.FIELDS[i][j].getDiamond()) {
+                                showField(folder + "diamond.png", i, j);
+                            } else if (Matrix.FIELDS[i][j].getFigure() != null) {
 
-                            if("YELLOW".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())){
+                                if ("YELLOW".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
 
-                                if(Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure){
-                                    showField(folder + "regular_yellow.png", i, j);
-                                }else if(Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure){
-                                    showField(folder + "hovering_yellow.png", i, j);
-                                }else{
-                                    showField(folder + "super_fast_yellow.png", i, j);
-                                }
-                            }else if("GREEN".equals(Main.CURRENT_FIGURE.getColour().toString())){
+                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                        showField(folder + "regular_yellow.png", i, j);
+                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                        showField(folder + "hovering_yellow.png", i, j);
+                                    } else {
+                                        showField(folder + "super_fast_yellow.png", i, j);
+                                    }
+                                } else if ("GREEN".equals(Main.CURRENT_FIGURE.getColour().toString())) {
 
-                                if(Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure){
-                                    showField(folder + "regular_green.png", i, j);
-                                }else if(Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure){
-                                    showField(folder + "hovering_green.png", i, j);
-                                }else{
-                                    showField(folder + "super_fast_green.png", i, j);
-                                }
-                            }else if("RED".equals(Main.CURRENT_FIGURE.getColour().toString())){
+                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                        showField(folder + "regular_green.png", i, j);
+                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                        showField(folder + "hovering_green.png", i, j);
+                                    } else {
+                                        showField(folder + "super_fast_green.png", i, j);
+                                    }
+                                } else if ("RED".equals(Main.CURRENT_FIGURE.getColour().toString())) {
 
-                                if(Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure){
-                                    showField(folder + "regular_red.png", i, j);
-                                }else if(Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure){
-                                    showField(folder + "hovering_red.png", i, j);
-                                }else{
-                                    showField(folder + "super_fast_red.png", i, j);
-                                }
-                            }else{
+                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                        showField(folder + "regular_red.png", i, j);
+                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                        showField(folder + "hovering_red.png", i, j);
+                                    } else {
+                                        showField(folder + "super_fast_red.png", i, j);
+                                    }
+                                } else {
 
-                                if(Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure){
-                                    showField(folder + "regular_blue.png", i, j);
-                                }else if(Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure){
-                                    showField(folder + "hovering_blue.png", i, j);
-                                }else{
-                                    showField(folder + "super_fast_blue.png", i, j);
+                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                        showField(folder + "regular_blue.png", i, j);
+                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                        showField(folder + "hovering_blue.png", i, j);
+                                    } else {
+                                        showField(folder + "super_fast_blue.png", i, j);
+                                    }
+
                                 }
                             }
                         }
                     }
-                }
-                try{
-                    Thread.sleep(1000);
-                }catch (Exception ex){
-                    Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
-                }
-                Matrix.LOCK.notifyAll();
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception ex) {
+                        Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+                    }
+                    Matrix.LOCK.notifyAll();
                 }
             }
+            Platform.exit();
         };
-        Thread mapRefreshThread = new Thread(mapRefreshRunnable);
+        Thread mapRefreshThread = new Thread(mapDrawer);
         mapRefreshThread.start();
     }
 
     @FXML
     void start(){
+
         mapRefresh();
         Main.MATRIX.play();
     }

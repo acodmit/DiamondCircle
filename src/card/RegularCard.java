@@ -1,5 +1,7 @@
 package card;
 
+import main.Main;
+
 public class RegularCard extends Card{
 
     private int number;
