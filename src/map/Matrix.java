@@ -128,6 +128,8 @@ public class Matrix{
         NUMBER_OF_PLAYERS_CURRENT--;
         playersOrder.remove(player);
         updateOrder();
+        if(NUMBER_OF_PLAYERS_CURRENT == 0)
+            Main.GAME_FINISHED = true;
     }
 
     public static Card getCard(){
@@ -178,7 +180,7 @@ public class Matrix{
 
         long startTime = currentTimeMillis();
         try {
-        createGameFile();
+            createGameFile();
         }catch (IOException ex){
             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }

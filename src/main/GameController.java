@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import card.Card;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -22,7 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 
-import map.Field;
+import javafx.util.Duration;
 import map.Matrix;
 import card.RegularCard;
 import card.SpecialCard;
@@ -117,7 +120,7 @@ public class GameController {
     private Label lblPlayer4;
 
 
-    public void initialize(){
+    public void initialize() {
         configureNodes();
         configureGrid();
         configureCardView();
@@ -125,24 +128,24 @@ public class GameController {
     }
 
 
-    public void configureNodes(){
+    public void configureNodes() {
 
-        if(Matrix.NUMBER_OF_PLAYERS <= 3){
+        if (Matrix.NUMBER_OF_PLAYERS <= 3) {
             lblPlayer4.setVisible(false);
         }
-        if(Matrix.NUMBER_OF_PLAYERS == 2){
+        if (Matrix.NUMBER_OF_PLAYERS == 2) {
             lblPlayer3.setVisible(false);
         }
 
         int number_of_figures = Matrix.NUMBER_OF_PLAYERS * 4;
 
-        if( number_of_figures <= 12){
+        if (number_of_figures <= 12) {
             btnFigure13.setVisible(false);
             btnFigure14.setVisible(false);
             btnFigure15.setVisible(false);
             btnFigure16.setVisible(false);
         }
-        if(number_of_figures <= 8){
+        if (number_of_figures <= 8) {
             btnFigure9.setVisible(false);
             btnFigure10.setVisible(false);
             btnFigure11.setVisible(false);
@@ -150,26 +153,26 @@ public class GameController {
         }
     }
 
-    public void configureGrid(){
+    public void configureGrid() {
 
         FIELD_SIZE = 350 / (double) Matrix.MATRIX_SIZE;
 
-        for(int i = 0; i < Matrix.MATRIX_SIZE; i++ ){
+        for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
             ColumnConstraints column = new ColumnConstraints(FIELD_SIZE);
             RowConstraints row = new RowConstraints(FIELD_SIZE);
             gridGame.getColumnConstraints().add(column);
             gridGame.getRowConstraints().add(row);
         }
 
-        for(int j = 0; j < Matrix.MATRIX_SIZE; j++){
-            for(int i = 0; i < Matrix.MATRIX_SIZE; i++){
+        for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
+            for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
                 ImageView fieldView = new ImageView();
                 fieldView.setFitWidth(FIELD_SIZE);
                 fieldView.setFitHeight(FIELD_SIZE);
-                gridGame.add(fieldView,i,j);
+                gridGame.add(fieldView, i, j);
                 Label lblNumber = new Label(Integer.toString(Matrix.FIELDS[i][j].getNumber()));
-                lblNumber.setFont(Font.font( 16.0));
-                gridGame.add(lblNumber,i,j);
+                lblNumber.setFont(Font.font(16.0));
+                gridGame.add(lblNumber, i, j);
                 GridPane.setHalignment(lblNumber, HPos.CENTER);
                 GridPane.setValignment(lblNumber, VPos.CENTER);
             }
@@ -177,28 +180,29 @@ public class GameController {
         gridGame.setGridLinesVisible(true);
     }
 
-    public void configureCardView(){
+    public void configureCardView() {
         ImageView cardView = new ImageView();
         cardView.setFitHeight(220);
         cardView.setFitWidth(170);
         anchorCard.getChildren().add(cardView);
     }
+
     private void configureGamesFolder() {
 
         int games;
-        try{
+        try {
             GAMES_FOLDER = new File("/C:/Users/Lenovo/IdeaProjects/DiamondCircle5/Resources/Games/");
             games = Objects.requireNonNull(GAMES_FOLDER.list()).length;
 
             lblNumberOfFinishedGames.setText(lblNumberOfFinishedGames.getText() + " " + games);
 
-        }catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
 
     }
 
-    public void showCard(String path){
+    public void showCard(String path) {
 
         Image cardImage = new Image(path);
         ImageView cardImageView = new ImageView(cardImage);
@@ -208,7 +212,7 @@ public class GameController {
 
     }
 
-    public void showField( String path, int X , int Y){
+    public void showField(String path, int X, int Y) {
 
         Image fieldImage = new Image(path);
         ImageView fieldImageView = new ImageView(fieldImage);
@@ -217,136 +221,104 @@ public class GameController {
         Platform.runLater(() -> gridGame.add(fieldImageView, X, Y));
     }
 
-    public void mapRefresh(){
+    public void mapRefresh() {
 
-        Runnable mapRefresh = () -> {
-            while (!Main.GAME_FINISHED) {
-                synchronized (Matrix.LOCK) {
-                    while (Main.GAME_PAUSE) {
-                        try {
-                            Matrix.LOCK.wait();
-                        } catch (InterruptedException ex) {
-                            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
-                        }
-                    }
 
-                    Platform.runLater(() -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
-
-                    if (Main.CURRENT_PLAYER != null)
-                        Platform.runLater(() -> lblCurrentPlayer.setText(Main.CURRENT_PLAYER.toString()));
-                    if (Main.CURRENT_CARD != null)
-                        Platform.runLater(() -> lblCurrentCard.setText(Main.CURRENT_CARD.toString()));
-                    if (Main.CURRENT_FIGURE != null)
-                        Platform.runLater(() -> lblCurrentFigure.setText(Main.CURRENT_FIGURE.toString()));
-
-                    String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/";
-                    if (Main.CURRENT_CARD instanceof RegularCard) {
-                        if (((RegularCard) Main.CURRENT_CARD).getNumber() == 1) {
-                            showCard(folder + "card_1.png");
-                        } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 2) {
-                            showCard(folder + "card_2.png");
-                        } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 3) {
-                            showCard(folder + "card_3.png");
-                        } else {
-                            showCard(folder + "card_4.png");
-                        }
-                    } else if (Main.CURRENT_CARD instanceof SpecialCard) {
-                        showCard(folder + "special.png");
-                    }
-                    for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
-                        for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
-                            if (Matrix.FIELDS[i][j].getHole()) {
-                                showField(folder + "hole.png", i, j);
-                            } else if (Matrix.FIELDS[i][j].getDiamond()) {
-                                showField(folder + "diamond.png", i, j);
-                            } else if (Matrix.FIELDS[i][j].getFigure() != null) {
-
-                                if ("YELLOW".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
-
-                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                        showField(folder + "regular_yellow.png", i, j);
-                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                        showField(folder + "hovering_yellow.png", i, j);
-                                    } else {
-                                        showField(folder + "super_fast_yellow.png", i, j);
-                                    }
-                                } else if ("GREEN".equals(Main.CURRENT_FIGURE.getColour().toString())) {
-
-                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                        showField(folder + "regular_green.png", i, j);
-                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                        showField(folder + "hovering_green.png", i, j);
-                                    } else {
-                                        showField(folder + "super_fast_green.png", i, j);
-                                    }
-                                } else if ("RED".equals(Main.CURRENT_FIGURE.getColour().toString())) {
-
-                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                        showField(folder + "regular_red.png", i, j);
-                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                        showField(folder + "hovering_red.png", i, j);
-                                    } else {
-                                        showField(folder + "super_fast_red.png", i, j);
-                                    }
-                                } else {
-
-                                    if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                        showField(folder + "regular_blue.png", i, j);
-                                    } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                        showField(folder + "hovering_blue.png", i, j);
-                                    } else {
-                                        showField(folder + "super_fast_blue.png", i, j);
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception ex) {
-                        Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
-                    }
-                    Matrix.LOCK.notifyAll();
+        synchronized (Matrix.LOCK) {
+            while (Main.GAME_PAUSE) {
+                try {
+                    Matrix.LOCK.wait();
+                } catch (InterruptedException ex) {
+                    Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
                 }
             }
-            Platform.exit();
-        };
-        Thread mapRefreshThread = new Thread(mapRefresh);
-        mapRefreshThread.start();
-    }
 
-    @FXML
-    void start(){
+            Platform.runLater(() -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
 
-        //mapRefresh();
-        //Main.MATRIX.play();
+            if (Main.CURRENT_PLAYER != null)
+                Platform.runLater(() -> lblCurrentPlayer.setText(Main.CURRENT_PLAYER.toString()));
+            if (Main.CURRENT_CARD != null)
+                Platform.runLater(() -> lblCurrentCard.setText(Main.CURRENT_CARD.toString()));
+            if (Main.CURRENT_FIGURE != null)
+                Platform.runLater(() -> lblCurrentFigure.setText(Main.CURRENT_FIGURE.toString()));
 
-        Platform.setImplicitExit(false);
+            String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/";
+            if (Main.CURRENT_CARD instanceof RegularCard) {
+                if (((RegularCard) Main.CURRENT_CARD).getNumber() == 1) {
+                    showCard(folder + "card_1.png");
+                } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 2) {
+                    showCard(folder + "card_2.png");
+                } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 3) {
+                    showCard(folder + "card_3.png");
+                } else {
+                    showCard(folder + "card_4.png");
+                }
+            } else if (Main.CURRENT_CARD instanceof SpecialCard) {
+                showCard(folder + "special.png");
+            }
+            for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
+                for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
+                    if (Matrix.FIELDS[i][j].getHole()) {
+                        showField(folder + "hole.png", i, j);
+                    } else if (Matrix.FIELDS[i][j].getDiamond()) {
+                        showField(folder + "diamond.png", i, j);
+                    } else if (Matrix.FIELDS[i][j].getFigure() != null) {
 
-        Platform.runLater( () -> anchorCard.getChildren().removeIf(node -> node instanceof ImageView));
-        Platform.runLater( () -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
+                        if ("YELLOW".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
 
-        Platform.runLater( () -> lblCurrentPlayer.setText(" PLAYER 0."));
-        String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/";
-        showCard(folder + "card_3.png");
+                            if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                showField(folder + "regular_yellow.png", i, j);
+                            } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                showField(folder + "hovering_yellow.png", i, j);
+                            } else {
+                                showField(folder + "super_fast_yellow.png", i, j);
+                            }
+                        } else if ("GREEN".equals(Main.CURRENT_FIGURE.getColour().toString())) {
 
-        try {
-            Thread.sleep(1000);
-        } catch (Exception ex) {
-            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+                            if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                showField(folder + "regular_green.png", i, j);
+                            } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                showField(folder + "hovering_green.png", i, j);
+                            } else {
+                                showField(folder + "super_fast_green.png", i, j);
+                            }
+                        } else if ("RED".equals(Main.CURRENT_FIGURE.getColour().toString())) {
+
+                            if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                showField(folder + "regular_red.png", i, j);
+                            } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                showField(folder + "hovering_red.png", i, j);
+                            } else {
+                                showField(folder + "super_fast_red.png", i, j);
+                            }
+                        } else {
+
+                            if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
+                                showField(folder + "regular_blue.png", i, j);
+                            } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
+                                showField(folder + "hovering_blue.png", i, j);
+                            } else {
+                                showField(folder + "super_fast_blue.png", i, j);
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            Matrix.LOCK.notifyAll();
         }
 
-        showCard(folder + "card_2.png");
+    }
+        @FXML
+        void start () {
 
-        try {
-            Thread.sleep(1000);
-        } catch (Exception ex) {
-            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> mapRefresh()));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+
+            Main.MATRIX.play();
+
         }
 
-        System.out.println("FINISHED.");
-
-    }
 }

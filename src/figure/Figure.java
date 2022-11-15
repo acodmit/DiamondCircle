@@ -119,6 +119,11 @@ abstract public class Figure {
         if(positionIndex == Matrix.PATH.size() - 1)
             setFinished();
 
+        try {
+            Thread.sleep(1000);
+        }catch (Exception ex) {
+            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+        }
 
 
     }

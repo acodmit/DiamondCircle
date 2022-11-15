@@ -38,7 +38,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("StartGame.fxml"));
         Scene scene = new Scene(root);
-        Image iconTitle = new Image ("/Images/pic1.png");
+        Image iconTitle = new Image ("Images/pic1.png");
         primaryStage.getIcons().add(iconTitle);
         primaryStage.setTitle("DiamondCircle");
         primaryStage.setScene(scene);

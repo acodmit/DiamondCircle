@@ -202,6 +202,7 @@ public class Player extends Thread {
                 totalSteps += step;
 
 
+
                 synchronized (Matrix.LOCK){
 
                     Matrix.TURN++;
