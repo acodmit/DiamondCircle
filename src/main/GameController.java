@@ -1,6 +1,8 @@
 package main;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +39,7 @@ public class GameController {
     public static File GAMES_FOLDER = null;
 
     @FXML
-    public AnchorPane anchorCard;
+    AnchorPane anchorCard;
 
     @FXML
     private Button btnFigure1;
@@ -88,7 +90,7 @@ public class GameController {
     private Button btnFigure9;
 
     @FXML
-    public GridPane gridGame;
+    GridPane gridGame;
 
     @FXML
     private Label lblCurrentCard;
@@ -217,7 +219,7 @@ public class GameController {
 
     public void mapRefresh(){
 
-        Runnable mapDrawer = () -> {
+        Runnable mapRefresh = () -> {
             while (!Main.GAME_FINISHED) {
                 synchronized (Matrix.LOCK) {
                     while (Main.GAME_PAUSE) {
@@ -311,14 +313,40 @@ public class GameController {
             }
             Platform.exit();
         };
-        Thread mapRefreshThread = new Thread(mapDrawer);
+        Thread mapRefreshThread = new Thread(mapRefresh);
         mapRefreshThread.start();
     }
 
     @FXML
     void start(){
 
-        mapRefresh();
-        Main.MATRIX.play();
+        //mapRefresh();
+        //Main.MATRIX.play();
+
+        Platform.setImplicitExit(false);
+
+        Platform.runLater( () -> anchorCard.getChildren().removeIf(node -> node instanceof ImageView));
+        Platform.runLater( () -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
+
+        Platform.runLater( () -> lblCurrentPlayer.setText(" PLAYER 0."));
+        String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/";
+        showCard(folder + "card_3.png");
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception ex) {
+            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+        }
+
+        showCard(folder + "card_2.png");
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception ex) {
+            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+        }
+
+        System.out.println("FINISHED.");
+
     }
 }

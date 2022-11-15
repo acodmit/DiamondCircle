@@ -5,12 +5,9 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.effect.Blend?>
 <AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GameController">
    <children>
       <Label fx:id="lblPlayer1" layoutX="84.0" layoutY="121.0" text="Player 1" textFill="#fa0505">
@@ -39,7 +36,6 @@
          </font>
       </Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="65.0" layoutX="59.0" layoutY="101.0" opacity="0.15" stroke="BLACK" strokeType="INSIDE" width="590.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="355.0" layoutX="691.0" layoutY="200.0" opacity="0.15" stroke="BLACK" strokeType="INSIDE" width="190.0" />
       <Label layoutX="38.0" layoutY="194.0" text="Paths:">
          <font>
             <Font name="Constantia" size="14.0" />
