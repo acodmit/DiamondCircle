@@ -1,5 +1,7 @@
 package figure;
 
+import javafx.scene.layout.GridPane;
+
 public class RegularFigure extends Figure{
 
     public RegularFigure( Colour colour){

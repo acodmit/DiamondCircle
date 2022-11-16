@@ -42,11 +42,11 @@ public class Matrix{
     public ArrayList<Player> players;
     public ArrayList<Player> playersOrder;
 
+
     public static final Object LOCK = new Object();
 
-    public Matrix(int matrix_size, int players_number){
-        MATRIX_SIZE = matrix_size;
-        NUMBER_OF_PLAYERS = players_number;
+    public Matrix(){
+
         NUMBER_OF_PLAYERS_CURRENT = NUMBER_OF_PLAYERS;
         FIELDS = new Field[MATRIX_SIZE][MATRIX_SIZE];
 
@@ -128,8 +128,9 @@ public class Matrix{
         NUMBER_OF_PLAYERS_CURRENT--;
         playersOrder.remove(player);
         updateOrder();
-        if(NUMBER_OF_PLAYERS_CURRENT == 0)
+        if(NUMBER_OF_PLAYERS_CURRENT == 0){
             Main.GAME_FINISHED = true;
+        }
     }
 
     public static Card getCard(){
@@ -180,7 +181,7 @@ public class Matrix{
 
         long startTime = currentTimeMillis();
         try {
-            createGameFile();
+        createGameFile();
         }catch (IOException ex){
             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
@@ -191,25 +192,10 @@ public class Matrix{
         }
 
         Thread ghost = new Thread(new GhostFigure());
-        ghost.start();
+        //ghost.start();
 
-        for(Player p : players){
-            try {
-                p.join();
-            } catch (InterruptedException ex) {
-                Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
-            }
-        }
 
-        Main.GAME_FINISHED = true;
 
-        try {
-            long totalTime = ( currentTimeMillis() - startTime) / 1000;
-            OUT.write("Total playing time: " + totalTime + "s");
-            OUT.close();
-        }catch (IOException ex){
-            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
-        }
     }
 
 }

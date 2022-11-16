@@ -12,9 +12,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -121,6 +123,9 @@ public class GameController {
 
 
     public void initialize() {
+
+        Main.MATRIX = new Matrix();
+
         configureNodes();
         configureGrid();
         configureCardView();
@@ -222,9 +227,10 @@ public class GameController {
     }
 
     public void mapRefresh() {
+        synchronized (LOCK) {
 
+            //System.out.println(" OSVJEZAVANJE MATRICE POCETAK.");
 
-        synchronized (Matrix.LOCK) {
             while (Main.GAME_PAUSE) {
                 try {
                     Matrix.LOCK.wait();
@@ -233,7 +239,10 @@ public class GameController {
                 }
             }
 
+
             Platform.runLater(() -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
+            Platform.runLater(() -> anchorCard.getChildren().removeIf(node -> node instanceof ImageView));
+
 
             if (Main.CURRENT_PLAYER != null)
                 Platform.runLater(() -> lblCurrentPlayer.setText(Main.CURRENT_PLAYER.toString()));
@@ -256,6 +265,9 @@ public class GameController {
             } else if (Main.CURRENT_CARD instanceof SpecialCard) {
                 showCard(folder + "special.png");
             }
+
+            //System.out.println(" OSVJEZAVANJE MATRICE.");
+
             for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
                 for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
                     if (Matrix.FIELDS[i][j].getHole()) {
@@ -291,7 +303,7 @@ public class GameController {
                             } else {
                                 showField(folder + "super_fast_red.png", i, j);
                             }
-                        } else {
+                        } else if ("BLUE".equals(Main.CURRENT_FIGURE.getColour().toString())) {
 
                             if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
                                 showField(folder + "regular_blue.png", i, j);
@@ -305,15 +317,17 @@ public class GameController {
                     }
                 }
             }
-
-            Matrix.LOCK.notifyAll();
         }
-
     }
         @FXML
         void start () {
 
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> mapRefresh()));
+            /*Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300),
+                    e -> showCard("file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/card_2.png")),
+            new KeyFrame(Duration.millis(1000),
+                    e -> showCard("file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/card_3.png")));*/
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300),e -> mapRefresh()));
             timeline.setCycleCount(Animation.INDEFINITE);
             timeline.play();
 

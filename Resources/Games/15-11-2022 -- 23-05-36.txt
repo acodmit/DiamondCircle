@@ -1,0 +1,16 @@
+Player 0 - 
+        Figure 0 (  SuperFastFigure, RED) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28]reached the end( no)
+        Figure 1 (  SuperFastFigure, RED) - previous path [0, 12, 21, 30, 39, 46]reached the end( no)
+        Figure 2 (  RegularFigure, RED) - previous path [0, 12, 21, 30]reached the end( no)
+        Figure 3 (  SuperFastFigure, RED) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18]reached the end( no)
+Player 2 - 
+        Figure 8 (  HoveringFigure, GREEN) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27]reached the end( yes)
+        Figure 9 (  SuperFastFigure, GREEN) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10]reached the end( no)
+        Figure 10 (  RegularFigure, GREEN) - previous path [0, 12, 21, 30]reached the end( no)
+        Figure 11 (  SuperFastFigure, GREEN) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24]reached the end( no)
+Player 1 - 
+        Figure 4 (  HoveringFigure, YELLOW) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27]reached the end( yes)
+        Figure 5 (  SuperFastFigure, YELLOW) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24]reached the end( no)
+        Figure 6 (  HoveringFigure, YELLOW) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27]reached the end( yes)
+        Figure 7 (  HoveringFigure, YELLOW) - previous path [0, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27]reached the end( yes)
+Total playing time: 0s

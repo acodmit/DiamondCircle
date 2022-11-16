@@ -1,5 +1,9 @@
 package figure;
 
+import javafx.application.Platform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import main.Main;
 import map.Field;
 import map.Matrix;
@@ -31,7 +35,8 @@ abstract public class Figure {
 
     private int diamonds;
 
-    public Figure( Colour colour){
+
+    public Figure(Colour colour){
 
         this.id = COUNT++;
         this.colour = colour;
@@ -101,32 +106,35 @@ abstract public class Figure {
 
     public void moveByStep() {
 
-        Matrix.PATH.get(positionIndex).setFigure(null);
-
-        if (positionIndex + 1 < Matrix.PATH.size()) {
-
-            if (Matrix.PATH.get(positionIndex).getFigure() == null) {
-                Matrix.PATH.get(positionIndex).setFigure(this);
-            }
-            previousPath.add(positionField);
-            positionIndex++;
-            positionField = Matrix.PATH.get(positionIndex).getNumber();
-            takeDiamondLocal(Matrix.PATH.get(positionIndex));
-            System.out.println("CURRENT POSITION " + positionIndex + "." + " FIELD " + positionField);
-            System.out.println("PLAYER " + Main.CURRENT_PLAYER.getID() + ". FIGURE "+ getId() + " MOVED FOR 1 STEP.");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
 
-        if(positionIndex == Matrix.PATH.size() - 1)
-            setFinished();
+        synchronized (Matrix.LOCK) {
+            Matrix.PATH.get(positionIndex).setFigure(null);
+            Matrix.PATH.get(positionIndex).figure = null;
 
-        try {
-            Thread.sleep(1000);
-        }catch (Exception ex) {
-            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+
+            if (positionIndex + 1 < Matrix.PATH.size()) {
+
+                if (Matrix.PATH.get(positionIndex).getFigure() == null) {
+                    Matrix.PATH.get(positionIndex).setFigure(this);
+                }
+                previousPath.add(positionField);
+                positionIndex++;
+                positionField = Matrix.PATH.get(positionIndex).getNumber();
+                takeDiamondLocal(Matrix.PATH.get(positionIndex));
+                System.out.println("CURRENT POSITION " + positionIndex + "." + " FIELD " + positionField);
+                System.out.println("PLAYER " + Main.CURRENT_PLAYER.getID() + ". FIGURE " + getId() + " MOVED FOR 1 STEP.");
+            } else
+                setFinished();
         }
 
 
     }
+
     private void takeDiamondLocal(Field field){
         if(field.takeDiamond()){
             diamonds++;

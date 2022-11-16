@@ -10,7 +10,7 @@ public class Field {
 
     private final int Y;
 
-    private Figure figure;
+    public Figure figure;
 
     private boolean diamond;
 

@@ -2,6 +2,7 @@ package player;
 
 import card.RegularCard;
 import figure.*;
+import javafx.scene.layout.GridPane;
 import main.Main;
 import map.Matrix;
 
@@ -35,7 +36,10 @@ public class Player extends Thread {
 
     private static boolean HOLES_SET = false;
 
+
+
     public Player() {
+
         id = COUNT++;
         playingStatus = true;
         name = "";
@@ -87,7 +91,7 @@ public class Player extends Thread {
         return "Player " + id + " - " + this.getPlayerName();
     }
 
-    public void updateGameFile(){
+    public void updateGameFile() {
 
         try {
             Matrix.OUT.write(toString());
@@ -99,16 +103,20 @@ public class Player extends Thread {
                 Matrix.OUT.newLine();
             }
 
-            if (Matrix.NUMBER_OF_PLAYERS_CURRENT == 0) {
-                long totalTime = (currentTimeMillis() - startTime) / 1000;
-                Matrix.OUT.write("Total playing time: " + totalTime + "s");
-            }
-
-        }catch (IOException ex){
+        } catch (IOException ex) {
             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
-    }
 
+        if (Matrix.NUMBER_OF_PLAYERS_CURRENT == 0) {
+            try {
+                long totalTime = (currentTimeMillis() - startTime) / 1000;
+                Matrix.OUT.write("Total playing time: " + totalTime + "s");
+                Matrix.OUT.close();
+            } catch (IOException ex) {
+                Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
+            }
+        }
+    }
 
     @Override
     public void run() {
@@ -134,6 +142,12 @@ public class Player extends Thread {
                             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
                         }
                     }
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
                 }
 
 
@@ -179,28 +193,21 @@ public class Player extends Thread {
 
                 if(currentFigure instanceof SuperFastFigure) {
                     for (int j = 0; j < step; j++) {
-                        synchronized (Matrix.LOCK) {
                             Main.CURRENT_FIGURE.moveByStep();
                             Main.CURRENT_FIGURE.moveByStep();
-                        }
                     }
                 }else{
                     for (int j = 0; j < step; j++) {
-                        synchronized (Matrix.LOCK) {
                             Main.CURRENT_FIGURE.moveByStep();
-                        }
                     }
                 }
 
                 for(int j = Main.CURRENT_FIGURE.getDiamonds(); j > 0; j--){
-                    synchronized (Matrix.LOCK) {
                         Main.CURRENT_FIGURE.moveByStep();
                         step++;
-                    }
                 }
 
                 totalSteps += step;
-
 
 
                 synchronized (Matrix.LOCK){
@@ -223,8 +230,9 @@ public class Player extends Thread {
 
         synchronized(Matrix.LOCK){
 
-            updateGameFile();
             Main.MATRIX.deletePlayer(this);
+            updateGameFile();
+
             Matrix.TURN++;
             Matrix.LOCK.notifyAll();
         }

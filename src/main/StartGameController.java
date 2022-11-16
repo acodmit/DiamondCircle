@@ -39,6 +39,8 @@ public class StartGameController implements Initializable{
     private final String[] matrix_type = { "7x7", "8x8", "9x9", "10x10"};
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -54,7 +56,8 @@ public class StartGameController implements Initializable{
             String[] lines = line.split("x");
             int players_number = playersChoice.getValue();
 
-            Main.MATRIX = new Matrix( Integer.parseInt(lines[0]), players_number);
+            Matrix.NUMBER_OF_PLAYERS =  players_number;
+            Matrix.MATRIX_SIZE = Integer.parseInt(lines[0]);
 
             try{
                 root = FXMLLoader.load(getClass().getResource("Game.fxml"));
