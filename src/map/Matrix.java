@@ -39,9 +39,10 @@ public class Matrix{
 
     public static BufferedWriter OUT;
 
+    public static long START_TIME;
+
     public ArrayList<Player> players;
     public ArrayList<Player> playersOrder;
-
 
     public static final Object LOCK = new Object();
 
@@ -52,7 +53,7 @@ public class Matrix{
 
         for(int i = 0; i < MATRIX_SIZE; i++){
             for(int j = 0; j < MATRIX_SIZE; j++){
-                FIELDS[i][j] = new Field();
+                FIELDS[i][j] = new Field( i, j);
             }
         }
 
@@ -99,13 +100,13 @@ public class Matrix{
         String pathFile;
 
         if(MATRIX_SIZE == 7){
-            pathFile = "Resources/Paths/path_7.txt";
+            pathFile = "Resources" + File.separator + "Paths"+ File.separator+ "path_7.txt";
         }else if(MATRIX_SIZE == 8){
-            pathFile = "Resources/Paths/path_8.txt";
+            pathFile = "Resources" + File.separator + "Paths" + File.separator + "path_8.txt";
         }else if(MATRIX_SIZE == 9){
-            pathFile ="Resources/Paths/path_9.txt";
+            pathFile ="Resources" + File.separator + "Paths" + File.separator + "path_9.txt";
         } else {
-            pathFile ="Resources/Paths/path_10.txt";
+            pathFile ="Resources" + File.separator + "Paths" + File.separator + "path_10.txt";
         }
 
         List<String> path;
@@ -156,13 +157,18 @@ public class Matrix{
                 if(Matrix.PATH.get(position).getFigure() != null){
 
                     if(!(Matrix.PATH.get(position).getFigure() instanceof HoveringFigure)){
-                       Matrix.PATH.get(position).getFigure().setFallen();
-                       Matrix.PATH.get(position).setFigure(null);
+                        Matrix.PATH.get(position).getFigure().setFallen();
+                        Matrix.PATH.get(position).setFigure(null);
                     }
                 }
 
                 n--;
             }
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
     }
 
@@ -179,9 +185,9 @@ public class Matrix{
 
     public void play(){
 
-        long startTime = currentTimeMillis();
+        START_TIME = currentTimeMillis();
         try {
-        createGameFile();
+            createGameFile();
         }catch (IOException ex){
             Main.LOGGER.log(Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
@@ -192,9 +198,7 @@ public class Matrix{
         }
 
         Thread ghost = new Thread(new GhostFigure());
-        //ghost.start();
-
-
+        ghost.start();
 
     }
 

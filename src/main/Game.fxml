@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GameController">
+<AnchorPane prefHeight="703.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.GameController">
    <children>
       <Label fx:id="lblPlayer1" layoutX="84.0" layoutY="121.0" text="Player 1" textFill="#fa0505">
          <font>
@@ -30,7 +30,7 @@
             <Font name="Constantia Bold" size="20.0" />
          </font>
       </Label>
-      <Button layoutX="721.0" layoutY="115.0" mnemonicParsing="false" onAction="#start" text="Start / Pause">
+      <Button layoutX="721.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleStartBtn" text="Start / Pause">
          <font>
             <Font name="Constantia" size="18.0" />
          </font>
@@ -65,7 +65,9 @@
       <AnchorPane fx:id="anchorCard" layoutX="701.0" layoutY="220.0" prefHeight="220.0" prefWidth="170.0" />
       <Label fx:id="lblNumberOfFinishedGames" layoutX="27.0" layoutY="34.0" prefHeight="50.0" prefWidth="137.0" text="Number of finished games at the moment:" wrapText="true" />
       <Label fx:id="lblCurrentPlayer" layoutX="261.0" layoutY="568.0" prefHeight="18.0" prefWidth="394.0" text="Current: " wrapText="true" />
-      <Label fx:id="lblCurrentCard" layoutX="703.0" layoutY="443.0" prefHeight="99.0" prefWidth="158.0" />
-      <Label fx:id="lblCurrentFigure" layoutX="311.0" layoutY="591.0" prefHeight="44.0" prefWidth="314.0" wrapText="true" />
+      <Label fx:id="lblCurrentCard" layoutX="703.0" layoutY="443.0" prefHeight="121.0" prefWidth="158.0" wrapText="true" />
+      <Label fx:id="lblCurrentFigure" alignment="TOP_LEFT" layoutX="311.0" layoutY="591.0" prefHeight="97.0" prefWidth="314.0" wrapText="true" />
+      <Button layoutX="726.0" layoutY="586.0" mnemonicParsing="false" onAction="#handleShowBtn" prefHeight="50.0" prefWidth="111.0" text="Show Files" />
+      <Label fx:id="lblCurrentTime" layoutX="701.0" layoutY="34.0" prefHeight="26.0" prefWidth="170.0" text="Current time playing: " />
    </children>
 </AnchorPane>

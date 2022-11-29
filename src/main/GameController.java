@@ -1,22 +1,21 @@
 package main;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -27,6 +26,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 
+
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import map.Matrix;
 import card.RegularCard;
@@ -39,6 +40,7 @@ import static map.Matrix.LOCK;
 
 public class GameController {
 
+    public static int COUNT = 0;
     public static double FIELD_SIZE;
 
     public static File GAMES_FOLDER = null;
@@ -48,27 +50,6 @@ public class GameController {
 
     @FXML
     private Button btnFigure1;
-
-    @FXML
-    private Button btnFigure10;
-
-    @FXML
-    private Button btnFigure11;
-
-    @FXML
-    private Button btnFigure12;
-
-    @FXML
-    private Button btnFigure13;
-
-    @FXML
-    private Button btnFigure14;
-
-    @FXML
-    private Button btnFigure15;
-
-    @FXML
-    private Button btnFigure16;
 
     @FXML
     private Button btnFigure2;
@@ -95,7 +76,32 @@ public class GameController {
     private Button btnFigure9;
 
     @FXML
+    private Button btnFigure10;
+
+    @FXML
+    private Button btnFigure11;
+
+    @FXML
+    private Button btnFigure12;
+
+    @FXML
+    private Button btnFigure13;
+
+    @FXML
+    private Button btnFigure14;
+
+    @FXML
+    private Button btnFigure15;
+
+    @FXML
+    private Button btnFigure16;
+
+
+    @FXML
     GridPane gridGame;
+
+    @FXML
+    private Label lblCurrentTime;
 
     @FXML
     private Label lblCurrentCard;
@@ -121,10 +127,14 @@ public class GameController {
     @FXML
     private Label lblPlayer4;
 
+    private Timeline timeline;
 
     public void initialize() {
 
         Main.MATRIX = new Matrix();
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(500),e -> mapRefresh()));
+        timeline.setCycleCount(Animation.INDEFINITE);
 
         configureNodes();
         configureGrid();
@@ -169,13 +179,13 @@ public class GameController {
             gridGame.getRowConstraints().add(row);
         }
 
-        for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
-            for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
+        for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
+            for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
                 ImageView fieldView = new ImageView();
                 fieldView.setFitWidth(FIELD_SIZE);
                 fieldView.setFitHeight(FIELD_SIZE);
                 gridGame.add(fieldView, i, j);
-                Label lblNumber = new Label(Integer.toString(Matrix.FIELDS[i][j].getNumber()));
+                Label lblNumber = new Label(Integer.toString(Matrix.FIELDS[j][i].getNumber()));
                 lblNumber.setFont(Font.font(16.0));
                 gridGame.add(lblNumber, i, j);
                 GridPane.setHalignment(lblNumber, HPos.CENTER);
@@ -196,7 +206,7 @@ public class GameController {
 
         int games;
         try {
-            GAMES_FOLDER = new File("/C:/Users/Lenovo/IdeaProjects/DiamondCircle5/Resources/Games/");
+            GAMES_FOLDER = new File("Resources" + File.separator + "Games");
             games = Objects.requireNonNull(GAMES_FOLDER.list()).length;
 
             lblNumberOfFinishedGames.setText(lblNumberOfFinishedGames.getText() + " " + games);
@@ -239,19 +249,20 @@ public class GameController {
                 }
             }
 
+            Main.CURRENT_TIME += 500;
 
             Platform.runLater(() -> gridGame.getChildren().removeIf(node -> node instanceof ImageView));
             Platform.runLater(() -> anchorCard.getChildren().removeIf(node -> node instanceof ImageView));
 
-
+            Platform.runLater(() -> lblCurrentTime.setText("Current time playing: " + Main.CURRENT_TIME / 1000 + "s"));
             if (Main.CURRENT_PLAYER != null)
-                Platform.runLater(() -> lblCurrentPlayer.setText(Main.CURRENT_PLAYER.toString()));
+                Platform.runLater(() -> lblCurrentPlayer.setText("Current - " + Main.CURRENT_PLAYER.toString()));
             if (Main.CURRENT_CARD != null)
                 Platform.runLater(() -> lblCurrentCard.setText(Main.CURRENT_CARD.toString()));
             if (Main.CURRENT_FIGURE != null)
                 Platform.runLater(() -> lblCurrentFigure.setText(Main.CURRENT_FIGURE.toString()));
 
-            String folder = "file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/";
+            String folder = File.separator + "Images" + File.separator;
             if (Main.CURRENT_CARD instanceof RegularCard) {
                 if (((RegularCard) Main.CURRENT_CARD).getNumber() == 1) {
                     showCard(folder + "card_1.png");
@@ -259,7 +270,7 @@ public class GameController {
                     showCard(folder + "card_2.png");
                 } else if (((RegularCard) Main.CURRENT_CARD).getNumber() == 3) {
                     showCard(folder + "card_3.png");
-                } else {
+                } else if(((RegularCard) Main.CURRENT_CARD).getNumber() == 4){
                     showCard(folder + "card_4.png");
                 }
             } else if (Main.CURRENT_CARD instanceof SpecialCard) {
@@ -271,46 +282,46 @@ public class GameController {
             for (int j = 0; j < Matrix.MATRIX_SIZE; j++) {
                 for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {
                     if (Matrix.FIELDS[i][j].getHole()) {
-                        showField(folder + "hole.png", i, j);
+                        showField(folder + "hole.png", j, i);
                     } else if (Matrix.FIELDS[i][j].getDiamond()) {
-                        showField(folder + "diamond.png", i, j);
+                        showField(folder + "diamond.png", j, i);
                     } else if (Matrix.FIELDS[i][j].getFigure() != null) {
 
                         if ("YELLOW".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
 
                             if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                showField(folder + "regular_yellow.png", i, j);
+                                showField(folder + "regular_yellow.png", j, i);
                             } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                showField(folder + "hovering_yellow.png", i, j);
+                                showField(folder + "hovering_yellow.png", j, i);
                             } else {
-                                showField(folder + "super_fast_yellow.png", i, j);
+                                showField(folder + "super_fast_yellow.png", j, i);
                             }
-                        } else if ("GREEN".equals(Main.CURRENT_FIGURE.getColour().toString())) {
+                        } else if ("GREEN".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
 
                             if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                showField(folder + "regular_green.png", i, j);
+                                showField(folder + "regular_green.png", j, i);
                             } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                showField(folder + "hovering_green.png", i, j);
+                                showField(folder + "hovering_green.png", j, i);
                             } else {
-                                showField(folder + "super_fast_green.png", i, j);
+                                showField(folder + "super_fast_green.png", j, i);
                             }
-                        } else if ("RED".equals(Main.CURRENT_FIGURE.getColour().toString())) {
+                        } else if ("RED".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
 
                             if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                showField(folder + "regular_red.png", i, j);
+                                showField(folder + "regular_red.png", j, i);
                             } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                showField(folder + "hovering_red.png", i, j);
+                                showField(folder + "hovering_red.png", j, i);
                             } else {
-                                showField(folder + "super_fast_red.png", i, j);
+                                showField(folder + "super_fast_red.png", j, i);
                             }
-                        } else if ("BLUE".equals(Main.CURRENT_FIGURE.getColour().toString())) {
+                        } else if ("BLUE".equals(Matrix.FIELDS[i][j].getFigure().getColour().toString())) {
 
                             if (Matrix.FIELDS[i][j].getFigure() instanceof RegularFigure) {
-                                showField(folder + "regular_blue.png", i, j);
+                                showField(folder + "regular_blue.png", j, i);
                             } else if (Matrix.FIELDS[i][j].getFigure() instanceof HoveringFigure) {
-                                showField(folder + "hovering_blue.png", i, j);
+                                showField(folder + "hovering_blue.png", j, i);
                             } else {
-                                showField(folder + "super_fast_blue.png", i, j);
+                                showField(folder + "super_fast_blue.png", j, i);
                             }
 
                         }
@@ -319,20 +330,46 @@ public class GameController {
             }
         }
     }
-        @FXML
-        void start () {
 
-            /*Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300),
-                    e -> showCard("file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/card_2.png")),
-            new KeyFrame(Duration.millis(1000),
-                    e -> showCard("file:/C:/Users/Lenovo/IdeaProjects/DiamondCircle4/Resources/Images/card_3.png")));*/
+    @FXML
+    void handleShowBtn(){
 
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(300),e -> mapRefresh()));
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
+        Stage filesStage = new Stage();
+        Parent root = null;
 
-            Main.MATRIX.play();
-
+        try{
+            root = FXMLLoader.load( getClass().getResource("Files.fxml"));
+        }catch ( IOException ex){
+            Main.LOGGER.log( Level.WARNING, ex.fillInStackTrace().toString(), ex);
         }
 
+        Scene scene = new Scene(root);
+        filesStage.setTitle("FinishedGames");
+        Image iconTitle = new Image (File.separator + "Images" + File.separator + "pic1.png");
+        filesStage.getIcons().add(iconTitle);
+        filesStage.setScene(scene);
+        filesStage.show();
+    }
+
+
+        @FXML
+        void handleStartBtn () {
+
+            if (COUNT == 0) {
+                timeline.play();
+                Main.MATRIX.play();
+
+            } else if (COUNT % 2 == 1) {
+                timeline.pause();
+                Main.GAME_PAUSE = true;
+
+            } else {
+                Main.GAME_PAUSE = false;
+                synchronized (LOCK) {
+                    LOCK.notifyAll();
+                }
+                timeline.play();
+            }
+            COUNT++;
+        }
 }

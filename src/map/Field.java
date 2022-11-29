@@ -16,10 +16,13 @@ public class Field {
 
     private boolean hole;
 
-    public Field (){
-        this.number = COUNT++;
-        this.X = number / Matrix.MATRIX_SIZE;
-        this.Y = number % Matrix.MATRIX_SIZE;
+    public Field ( int X, int Y){
+        number = X * Matrix.MATRIX_SIZE + Y;
+        //this.number = COUNT++;
+        //this.X = number / Matrix.MATRIX_SIZE;
+        //this.Y = number % Matrix.MATRIX_SIZE;
+        this.X = X;
+        this.Y = Y;
     }
     public int getX(){
         return X;
@@ -50,12 +53,12 @@ public class Field {
         return diamond;
     }
 
-    public boolean takeDiamond(){
+    public int takeDiamond(){
         if(getDiamond()){
             diamond = false;
-            return true;
+            return 1;
         }else
-            return false;
+            return 0;
     }
 
     public void setHole(boolean hole){

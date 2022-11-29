@@ -41,7 +41,7 @@ public class GhostFigure implements Runnable{
 
                     position = rand.nextInt(Matrix.PATH.size());
 
-                    if (Matrix.PATH.get(position).getDiamond()) {
+                    if (Matrix.PATH.get(position).getDiamond() || Matrix.PATH.get(position).getFigure() != null) {
                         continue;
                     }
                     Matrix.PATH.get(position).setDiamond(true);

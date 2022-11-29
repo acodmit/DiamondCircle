@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import map.Matrix;
 import player.Player;
 
+import java.io.File;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,8 @@ public class Main extends Application {
 
     public static Figure CURRENT_FIGURE;
 
+    public static long CURRENT_TIME;
+
     public static Boolean GAME_PAUSE = false;
 
     public static Boolean GAME_FINISHED = false;
@@ -38,7 +41,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("StartGame.fxml"));
         Scene scene = new Scene(root);
-        Image iconTitle = new Image ("/Images/pic1.png");
+        Image iconTitle = new Image (File.separator + "Images" + File.separator + "pic1.png");
         primaryStage.getIcons().add(iconTitle);
         primaryStage.setTitle("DiamondCircle");
         primaryStage.setScene(scene);

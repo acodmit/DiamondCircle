@@ -88,7 +88,7 @@ public class Player extends Thread {
 
     @Override
     public String toString() {
-        return "Player " + id + " - " + this.getPlayerName();
+        return "Player " + id + this.getPlayerName();
     }
 
     public void updateGameFile() {
@@ -98,7 +98,7 @@ public class Player extends Thread {
             Matrix.OUT.newLine();
 
             for (int j = 0; j < 4; j++) {
-                Figure figure = this.figures.get(j);
+                Figure figure = figures.get(j);
                 Matrix.OUT.write("        " + figure.toString());
                 Matrix.OUT.newLine();
             }
@@ -109,7 +109,7 @@ public class Player extends Thread {
 
         if (Matrix.NUMBER_OF_PLAYERS_CURRENT == 0) {
             try {
-                long totalTime = (currentTimeMillis() - startTime) / 1000;
+                long totalTime = (currentTimeMillis() - Matrix.START_TIME) / 1000;
                 Matrix.OUT.write("Total playing time: " + totalTime + "s");
                 Matrix.OUT.close();
             } catch (IOException ex) {
@@ -186,6 +186,12 @@ public class Player extends Thread {
                 else {
                     Main.MATRIX.setHoles();
                     HOLES_SET = true;
+
+                    synchronized (Matrix.LOCK){
+                        Matrix.TURN++;
+                        Matrix.LOCK.notifyAll();
+                    }
+
                     continue;
                 }
 
