@@ -42,7 +42,7 @@ abstract public class Figure {
         this.colour = colour;
         previousPath = new ArrayList<>();
         this.fallen = false;
-        this.positionField = 0;
+        this.positionField = Matrix.PATH.get(0).getNumber();
         this.positionIndex = 0;
         this.finished = false;
         this.totalTime = 0;
@@ -58,12 +58,12 @@ abstract public class Figure {
     @Override
     public String toString(){
         String finished = "";
-        if(isFinished() == true)
-            finished = "( yes)";
+        if(isFinished())
+            finished = "( yes )";
         else
-            finished = "( no)";
+            finished = "( no )";
         return "Figure " + getId() + " ( " + getType() + ", " + getColour() +
-                ") - previous path " + previousPath.toString() + "reached the end" + finished;
+                ") - previous path " + previousPath.toString() + ", reached the end " + finished + ", has fallen ( " + fallen + ").";
     }
 
     public Colour getColour(){
@@ -101,6 +101,13 @@ abstract public class Figure {
 
     public int getDiamonds(){
         return diamonds;
+    }
+
+    public boolean checkPath( int position){
+        if( previousPath.contains( position))
+            return true;
+        else
+            return false;
     }
 
 

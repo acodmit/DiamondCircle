@@ -175,6 +175,7 @@ public class Player extends Thread {
                     if (totalSteps == -1) {
                         totalSteps = 0;
                         Main.CURRENT_FIGURE.setPosition(0);
+
                     }
                 }
 

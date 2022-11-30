@@ -57,6 +57,9 @@ public class Matrix{
             }
         }
 
+        PATH = new ArrayList<>();
+        initializePath();
+
         players = new ArrayList<>();
         for( int i = 0; i < NUMBER_OF_PLAYERS; i++){
             Player player = new Player();
@@ -78,8 +81,6 @@ public class Matrix{
         }
         Collections.shuffle(CARDS);
 
-        PATH = new ArrayList<>();
-        initializePath();
 
         System.out.println("MATRIX CREATED.");
     }

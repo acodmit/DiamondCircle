@@ -41,22 +41,22 @@
             <Font name="Constantia" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnFigure1" layoutX="45.0" layoutY="230.0" mnemonicParsing="false" text="Figure1" textFill="#fa0505" />
-      <Button fx:id="btnFigure2" layoutX="45.0" layoutY="265.0" mnemonicParsing="false" text="Figure2" textFill="#fa0505" />
-      <Button fx:id="btnFigure3" layoutX="120.0" layoutY="230.0" mnemonicParsing="false" text="Figure3" textFill="#fa0505" />
-      <Button fx:id="btnFigure4" layoutX="120.0" layoutY="265.0" mnemonicParsing="false" text="Figure4" textFill="#fa0505" />
-      <Button fx:id="btnFigure5" layoutX="45.0" layoutY="330.0" mnemonicParsing="false" text="Figure5" textFill="#c9d126" />
-      <Button fx:id="btnFigure6" layoutX="45.0" layoutY="365.0" mnemonicParsing="false" text="Figure6" textFill="#c9d126" />
-      <Button fx:id="btnFigure7" layoutX="120.0" layoutY="330.0" mnemonicParsing="false" text="Figure7" textFill="#c9d126" />
-      <Button fx:id="btnFigure8" layoutX="120.0" layoutY="365.0" mnemonicParsing="false" text="Figure8" textFill="#c9d126" />
-      <Button fx:id="btnFigure9" layoutX="45.0" layoutY="430.0" mnemonicParsing="false" text="Figure9" textFill="#25e41b" />
-      <Button fx:id="btnFigure10" layoutX="45.0" layoutY="465.0" mnemonicParsing="false" text="Figure10" textFill="#25e41b" />
-      <Button fx:id="btnFigure11" layoutX="120.0" layoutY="430.0" mnemonicParsing="false" text="Figure11" textFill="#25e41b" />
-      <Button fx:id="btnFigure12" layoutX="120.0" layoutY="465.0" mnemonicParsing="false" text="Figure12" textFill="#25e41b" />
-      <Button fx:id="btnFigure13" layoutX="45.0" layoutY="530.0" mnemonicParsing="false" text="Figure13" textFill="#1c9ce1" />
-      <Button fx:id="btnFigure14" layoutX="45.0" layoutY="565.0" mnemonicParsing="false" text="Figure14" textFill="#1c9ce1" />
-      <Button fx:id="btnFigure15" layoutX="120.0" layoutY="530.0" mnemonicParsing="false" text="Figure15" textFill="#1c9ce1" />
-      <Button fx:id="btnFigure16" layoutX="120.0" layoutY="565.0" mnemonicParsing="false" text="Figure16" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure0" layoutX="45.0" layoutY="230.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure0" textFill="#fa0505" />
+      <Button fx:id="btnFigure1" layoutX="45.0" layoutY="265.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure1" textFill="#fa0505" />
+      <Button fx:id="btnFigure2" layoutX="120.0" layoutY="230.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure2" textFill="#fa0505" />
+      <Button fx:id="btnFigure3" layoutX="120.0" layoutY="265.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure3" textFill="#fa0505" />
+      <Button fx:id="btnFigure4" layoutX="45.0" layoutY="330.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure4" textFill="#c9d126" />
+      <Button fx:id="btnFigure5" layoutX="45.0" layoutY="365.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure5" textFill="#c9d126" />
+      <Button fx:id="btnFigure6" layoutX="120.0" layoutY="330.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure6" textFill="#c9d126" />
+      <Button fx:id="btnFigure7" layoutX="120.0" layoutY="365.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure7" textFill="#c9d126" />
+      <Button fx:id="btnFigure8" layoutX="45.0" layoutY="430.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure8" textFill="#25e41b" />
+      <Button fx:id="btnFigure9" layoutX="45.0" layoutY="465.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure9" textFill="#25e41b" />
+      <Button fx:id="btnFigure10" layoutX="120.0" layoutY="430.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure10" textFill="#25e41b" />
+      <Button fx:id="btnFigure11" layoutX="120.0" layoutY="465.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure11" textFill="#25e41b" />
+      <Button fx:id="btnFigure12" layoutX="45.0" layoutY="530.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure12" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure13" layoutX="45.0" layoutY="565.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure13" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure14" layoutX="120.0" layoutY="530.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure14" textFill="#1c9ce1" />
+      <Button fx:id="btnFigure15" layoutX="120.0" layoutY="565.0" mnemonicParsing="false" onAction="#showFigurePath" text="Figure15" textFill="#1c9ce1" />
       <Separator layoutX="20.0" layoutY="310.0" prefWidth="200.0" />
       <Separator layoutX="20.0" layoutY="410.0" prefWidth="200.0" />
       <Separator layoutX="20.0" layoutY="510.0" prefWidth="200.0" />
@@ -67,7 +67,7 @@
       <Label fx:id="lblCurrentPlayer" layoutX="261.0" layoutY="568.0" prefHeight="18.0" prefWidth="394.0" text="Current: " wrapText="true" />
       <Label fx:id="lblCurrentCard" layoutX="703.0" layoutY="443.0" prefHeight="121.0" prefWidth="158.0" wrapText="true" />
       <Label fx:id="lblCurrentFigure" alignment="TOP_LEFT" layoutX="311.0" layoutY="591.0" prefHeight="97.0" prefWidth="314.0" wrapText="true" />
-      <Button layoutX="726.0" layoutY="586.0" mnemonicParsing="false" onAction="#handleShowBtn" prefHeight="50.0" prefWidth="111.0" text="Show Files" />
+      <Button layoutX="726.0" layoutY="586.0" mnemonicParsing="false" onAction="#handleShowFilesBtn" prefHeight="50.0" prefWidth="111.0" text="Show Files" />
       <Label fx:id="lblCurrentTime" layoutX="701.0" layoutY="34.0" prefHeight="26.0" prefWidth="170.0" text="Current time playing: " />
    </children>
 </AnchorPane>

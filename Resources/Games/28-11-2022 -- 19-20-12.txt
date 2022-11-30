@@ -1,0 +1,11 @@
+Player 0 - 
+        Figure 0 (  RegularFigure, RED) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+        Figure 1 (  RegularFigure, RED) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+        Figure 2 (  SuperFastFigure, RED) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+        Figure 3 (  RegularFigure, RED) - previous path [3, 11, 19, 27]reached the end( no)
+Player 1 - 
+        Figure 4 (  RegularFigure, YELLOW) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+        Figure 5 (  SuperFastFigure, YELLOW) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+        Figure 6 (  RegularFigure, YELLOW) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+        Figure 7 (  SuperFastFigure, YELLOW) - previous path [3, 11, 19, 27, 33, 39, 45, 37, 29, 21, 15, 9, 10, 18, 26, 32, 38, 30, 22, 16, 17, 25, 31, 23]reached the end( yes)
+Total playing time: 1669659881s

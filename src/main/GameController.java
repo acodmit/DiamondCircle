@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
 
+import figure.Figure;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -47,6 +49,8 @@ public class GameController {
 
     @FXML
     AnchorPane anchorCard;
+    @FXML
+    private Button btnFigure0;
 
     @FXML
     private Button btnFigure1;
@@ -93,9 +97,6 @@ public class GameController {
     @FXML
     private Button btnFigure15;
 
-    @FXML
-    private Button btnFigure16;
-
 
     @FXML
     GridPane gridGame;
@@ -116,18 +117,20 @@ public class GameController {
     private Label lblNumberOfFinishedGames;
 
     @FXML
-    private Label lblPlayer1;
-
-    @FXML
-    private Label lblPlayer2;
-
-    @FXML
     private Label lblPlayer3;
 
     @FXML
     private Label lblPlayer4;
 
     private Timeline timeline;
+
+//    EventHandler<ActionEvent> showFigurePathEvent = new EventHandler<ActionEvent>() {
+//        public void handle(ActionEvent e) {
+//
+//            String[] lines = e.getSource().toString().split("Figure");
+//            showFigurePath(lines[1].charAt(0));
+//        }
+//    };
 
     public void initialize() {
 
@@ -140,6 +143,7 @@ public class GameController {
         configureGrid();
         configureCardView();
         configureGamesFolder();
+
     }
 
 
@@ -155,16 +159,16 @@ public class GameController {
         int number_of_figures = Matrix.NUMBER_OF_PLAYERS * 4;
 
         if (number_of_figures <= 12) {
+            btnFigure12.setVisible(false);
             btnFigure13.setVisible(false);
             btnFigure14.setVisible(false);
             btnFigure15.setVisible(false);
-            btnFigure16.setVisible(false);
         }
         if (number_of_figures <= 8) {
+            btnFigure8.setVisible(false);
             btnFigure9.setVisible(false);
             btnFigure10.setVisible(false);
             btnFigure11.setVisible(false);
-            btnFigure12.setVisible(false);
         }
     }
 
@@ -332,7 +336,7 @@ public class GameController {
     }
 
     @FXML
-    void handleShowBtn(){
+    void handleShowFilesBtn(){
 
         Stage filesStage = new Stage();
         Parent root = null;
@@ -349,6 +353,45 @@ public class GameController {
         filesStage.getIcons().add(iconTitle);
         filesStage.setScene(scene);
         filesStage.show();
+    }
+
+
+
+    @FXML
+    void showFigurePath(ActionEvent event) {
+
+        System.out.println( event.getSource().toString());
+
+        String[] lines = event.getSource().toString().split("(Figure)|'");
+        int id = Integer.parseInt(lines[3]);
+        Figure showingFigure;
+        System.out.println(lines[3]);
+
+
+        showingFigure = Main.MATRIX.players.get(id/4).figures.get(id%4);
+
+
+
+        Stage figurePathStage = new Stage();
+        Parent root = null;
+        FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("FigurePath.fxml"));
+
+        try{
+            root = loader.load();
+        }catch ( IOException ex){
+            Main.LOGGER.log( Level.WARNING, ex.fillInStackTrace().toString(), ex);
+        }
+
+        Scene scene = new Scene(root);
+        figurePathStage.setTitle("Figure Path");
+        Image iconTitle = new Image (File.separator + "Images" + File.separator + "pic1.png");
+        figurePathStage.getIcons().add(iconTitle);
+        figurePathStage.setScene(scene);
+        figurePathStage.show();
+        FigurePathController fpc = loader.getController();
+        fpc.show(showingFigure);
+
     }
 
 
