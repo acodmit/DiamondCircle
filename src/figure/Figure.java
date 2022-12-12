@@ -1,16 +1,11 @@
 package figure;
 
-import javafx.application.Platform;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+
 import main.Main;
-import map.Field;
 import map.Matrix;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 abstract public class Figure {
 

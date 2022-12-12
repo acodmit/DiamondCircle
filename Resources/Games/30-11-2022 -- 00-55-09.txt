@@ -1,0 +1,16 @@
+Player 1
+        Figure 4 (  SuperFastFigure, YELLOW) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+        Figure 5 (  SuperFastFigure, YELLOW) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+        Figure 6 (  SuperFastFigure, YELLOW) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29], reached the end ( no ), has fallen ( true).
+        Figure 7 (  SuperFastFigure, YELLOW) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+Player 0
+        Figure 0 (  HoveringFigure, RED) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+        Figure 1 (  SuperFastFigure, RED) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+        Figure 2 (  RegularFigure, RED) - previous path [], reached the end ( no ), has fallen ( true).
+        Figure 3 (  RegularFigure, RED) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+Player 2
+        Figure 8 (  HoveringFigure, GREEN) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+        Figure 9 (  RegularFigure, GREEN) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34], reached the end ( no ), has fallen ( true).
+        Figure 10 (  SuperFastFigure, GREEN) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+        Figure 11 (  SuperFastFigure, GREEN) - previous path [3, 12, 21, 30, 39, 46, 53, 60, 51, 42, 33, 24, 17, 10, 11, 20, 29, 38, 45, 52, 43, 34, 25, 18, 19, 28, 37, 44, 35, 26, 27], reached the end ( yes ), has fallen ( false).
+Total playing time: 497s
