@@ -2,15 +2,12 @@ package main;
 
 import figure.Figure;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import map.Matrix;
 
@@ -26,8 +23,6 @@ public class FigurePathController {
 
     @FXML
     GridPane gridPath;
-
-    //private Figure figure;
 
     @FXML
     public void initialize() {
@@ -50,10 +45,6 @@ public class FigurePathController {
 
         Image fieldImage = new Image(File.separator + "Images" + File.separator + "path.png");
         ImageView fieldImageView;
-
-        //fieldImageView.setFitWidth(GameController.FIELD_SIZE);
-        //fieldImageView.setFitHeight(GameController.FIELD_SIZE);
-        //gridPath.add(fieldImageView, 1, 1);
 
 
         for (int i = 0; i < Matrix.MATRIX_SIZE; i++) {

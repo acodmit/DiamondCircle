@@ -124,13 +124,6 @@ public class GameController {
 
     private Timeline timeline;
 
-//    EventHandler<ActionEvent> showFigurePathEvent = new EventHandler<ActionEvent>() {
-//        public void handle(ActionEvent e) {
-//
-//            String[] lines = e.getSource().toString().split("Figure");
-//            showFigurePath(lines[1].charAt(0));
-//        }
-//    };
 
     public void initialize() {
 
